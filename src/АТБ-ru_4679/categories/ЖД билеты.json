@@ -1,6 +1,5 @@
 {
   "category": "ЖД билеты",
-  "unified_category": "Железнодорожные билеты",
   "include_mcc": [
     4011,
     4111,

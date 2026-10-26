@@ -1,5 +1,6 @@
 {
   "category": "Базовый кешбэк",
+  "unified_category": "Все покупки",
   "exclude_mcc": [
     3000,
     3001,

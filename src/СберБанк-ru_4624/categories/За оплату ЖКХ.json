@@ -1,5 +1,6 @@
 {
   "category": "За оплату ЖКХ",
+  "unified_category": "ЖКХ",
   "include_mcc": [
     4900
   ]

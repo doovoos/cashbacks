@@ -1,5 +1,6 @@
 {
   "category": "На все покупки",
+  "unified_category": "Все покупки",
   "exclude_mcc": [
     3990,
     3991,

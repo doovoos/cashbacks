@@ -1,5 +1,6 @@
 {
   "category": "Duty free",
+  "unified_category": "Duty Free",
   "include_mcc": [
     5309
   ]
