@@ -28,7 +28,7 @@
 
 Псевдонимы `category` описывают одно правило; их переданные значения и скалярная или массивная форма сохраняются. Вычисление имени файла не изменяет псевдонимы и не влияет на сопоставление. Для каждого псевдонима вычисляется нормализованный ключ: NFC; удалить `[^\w\s]` Unicode-регулярным выражением; заменить `[_\s]+` одним пробелом; `strip()`; `lower()`. Ключ обязан быть непустым, поэтому псевдоним только из удаляемых знаков отклоняется. Внутри одного банка все ключи, включая элементы одного массива и разных файлов, уникальны; у разных банков ключи независимы. JSON Schema `uniqueItems` проверяет только точные структурные повторы в одном массиве и не может обеспечить непустой нормализованный ключ, нормализованную или межфайловую уникальность. JSON Schema также не может проверить связь значения в JSON с именем файла: её проверяет валидатор во время выполнения. `POST /banks/{positive-id}/categories/match` использует те же ключи поиска, не изменяя необработанные правила или возвращаемые объекты. Нормализатор не использует `unified_category` и не выполняет приближённое или MCC-сопоставление.
 
-`unified_category` имеет самостоятельный смысл: не добавляйте, не удаляйте и не изменяйте его без публичного подтверждения и проверки сопровождающим. Другие поля и повторяющиеся JSON-ключи запрещены.
+Публичные источники банка подтверждают исходные категории и MCC. Правила работы с `unified_category` описаны в [отдельном документе](UNIFIED_CATEGORIES.md). Другие поля и повторяющиеся JSON-ключи запрещены.
 
 MCC — JSON-целые числа от 1 до 9999. `exclude_mcc` можно использовать вместо `include_mcc`, но не вместе с ним. Существующая проверка переносимости имени и пути выполняется до чтения JSON. После проверки правила и `category` несовпадение с каноническим именем немедленно вызывает `DataError`: сообщение содержит фактический путь относительно корня репозитория, точное ожидаемое имя файла и безопасно заключённый в кавычки исходный первый псевдоним. Строгая проверка также отклоняет символические ссылки, неизвестные поля, неверный порядок, некорректные псевдонимы и MCC; первая ошибка сообщается детерминированно.
 
@@ -41,6 +41,10 @@ MCC — JSON-целые числа от 1 до 9999. `exclude_mcc` можно и
   "include_mcc": [1234, 5678]
 }
 ```
+
+### Унифицированные названия
+
+При добавлении банка или категории, изменении MCC или `unified_category` следуйте [правилам унифицированных названий](UNIFIED_CATEGORIES.md). В документе описаны источник названий, точное сопоставление MCC, разрешение конфликтов, команды и проверка результата.
 
 ### Автоматическая проверка
 
@@ -76,7 +80,7 @@ Each file root is a strict JSON object with fields in canonical order:
 
 `category` aliases describe one rule. Their submitted scalar-or-array shape and raw values are preserved. Projecting the filename does not mutate aliases or affect matching. Each alias receives a normalized key: NFC; remove `[^\w\s]` with a Unicode regex; collapse `[_\s]+` to one space; strip; `lower()`. The key must be non-empty, so an alias made only of removed punctuation is rejected. Within one bank, all keys—including entries in one array and separate files—are distinct; different banks have independent keys. JSON Schema `uniqueItems` checks only exact structural duplicates within one array and cannot enforce a non-empty normalized key or normalized or cross-file uniqueness. JSON Schema also cannot enforce a relation between a JSON value and its filename; the runtime validator does. `POST /banks/{positive-id}/categories/match` uses the same lookup keys without changing raw rules or returned objects. The normalizer does not use `unified_category` and performs no fuzzy or MCC-based matching.
 
-`unified_category` has independent meaning: do not add, remove, or change it without public evidence and maintainer review. Other fields and duplicate JSON keys are forbidden.
+Public bank sources substantiate source categories and MCCs. See the [separate document](UNIFIED_CATEGORIES.md) for the rules governing `unified_category`. Other fields and duplicate JSON keys are forbidden.
 
 MCCs are JSON integers from 1 through 9999. `exclude_mcc` may replace `include_mcc`, but the two cannot appear together. The existing filename and path portability checks run before JSON is read. After the rule and `category` are validated, a canonical-name mismatch immediately raises `DataError`: its message contains the actual repository-relative path, the exact expected filename, and the safely quoted raw first alias. Strict validation also rejects symlinks, unknown fields, invalid ordering, invalid aliases, and invalid MCCs, reporting the first failure deterministically.
 
@@ -89,6 +93,10 @@ Example `src/Example Bank-ru_123/categories/Rail tickets.json`:
   "include_mcc": [1234, 5678]
 }
 ```
+
+### Unified category titles
+
+When adding a bank or category, changing MCCs, or editing `unified_category`, follow the [unified category rules](UNIFIED_CATEGORIES.md). That document covers the source of titles, exact MCC matching, conflict handling, commands, and result verification.
 
 ### Automatic validation
 
