@@ -1,5 +1,8 @@
 {
-  "category": "Цветы",
+  "category": [
+    "Цветы",
+    "Цвeты"
+  ],
   "unified_category": "Цветы",
   "include_mcc": [
     5193,
